@@ -120,8 +120,14 @@ func mergedFileDescriptors(debug bool) (*descriptorpb.FileDescriptorSet, error) 
 		}
 	}
 
-	slices.SortFunc(fds.File, func(x, y *descriptorpb.FileDescriptorProto) bool {
-		return *x.Name < *y.Name
+	slices.SortFunc(fds.File, func(x, y *descriptorpb.FileDescriptorProto) int {
+		if *x.Name < *y.Name {
+			return -1
+		}
+		if *x.Name > *y.Name {
+			return 1
+		}
+		return 0
 	})
 
 	return fds, nil
